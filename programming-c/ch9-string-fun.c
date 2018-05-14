@@ -39,6 +39,7 @@ void removeString (char text[], int startingIndex, int stringSize)
     if ( i >= startingIndex ) text[i] = text[i + stringSize];
     i++;
   }
+  printf ("Righteous, your string now looks like this: %s\n", text);
 }
 
 void insertString (char text[], char textToInsert[], int startingIndex)
@@ -52,6 +53,7 @@ void insertString (char text[], char textToInsert[], int startingIndex)
     i++;
   }
   text[i + startingIndex + insertedTextLength] = '\0';
+  printf ("Before inserting the new string, the string in memory looks like this: %s\n", text);
   i = 0;
 
   while ( textToInsert[i] != '\0' )
@@ -61,30 +63,32 @@ void insertString (char text[], char textToInsert[], int startingIndex)
   }
 }
 
+void replaceString (char sourceText[], char s1[], char s2[]) {
+  int index = findString (sourceText, s1);
+  if (index >= 0)
+  {
+    removeString (sourceText, index, getStringSize (s1));
+    insertString (sourceText, s2, index);
+  }
+
+}
+
 int main (void)
 {
-  int startingIndex;
-  // , stringSize;
-  char charString[20], substring[20];
+  char charString[30], s1[20], s2[20];
 
   printf ("Enter a character string: ");
   scanf ("%[^\n]", charString);
   printf ("Great! I have that the string is \"%s\".\n", charString);
-  printf ("Enter another character string to insert: ");
-  scanf("%s", substring);
-  printf ("Great! I have that the string string to insert is \"%s\".\n", substring);
-  printf ("Where should this string be inserted?: ");
-  scanf("%i", &startingIndex);
-  // printf ("Enter a word you want to find within: ");
-  // scanf ("%19s", substring);
-  //
-  // index = findString (word, substring);
-  //
-  // printf ("\nLooks like your substring is at index %i.\n", index);
+  printf ("Enter a contained character string you would like replaced: ");
+  scanf("%s", s1);
+  printf ("What would you like to replace it with?: ");
+  scanf("%s", s2);
+  printf ("Cool, let's replace \"%s\" with \"%s\".\n", s1, s2);
 
-  insertString (charString, substring, startingIndex);
+  replaceString (charString, s1, s2);
 
-  printf ("\nThe altered string is now \"%s\".\n", charString);
+  printf ("\nThe resulting string is now \"%s\".\n", charString);
 
   return 0;
 }
