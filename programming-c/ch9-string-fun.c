@@ -36,27 +36,45 @@ void removeString (char text[], int startingIndex, int stringSize)
   int i = 0;
   while ( text[i] != '\0' )
   {
-    if ( i >= startingIndex )
-    {
-      text[i] = text[i + stringSize];
-    }
+    if ( i >= startingIndex ) text[i] = text[i + stringSize];
+    i++;
+  }
+}
+
+void insertString (char text[], char textToInsert[], int startingIndex)
+{
+  int i = 0;
+  int insertedTextLength = getStringSize (textToInsert);
+
+  while ( i < insertedTextLength )
+  {
+    text[i + startingIndex + insertedTextLength] = text[i + startingIndex];
+    i++;
+  }
+  text[i + startingIndex + insertedTextLength] = '\0';
+  i = 0;
+
+  while ( textToInsert[i] != '\0' )
+  {
+    text[startingIndex + i] = textToInsert[i];
     i++;
   }
 }
 
 int main (void)
 {
-  int startingIndex, stringSize;
-  char charString[20];
-  // , substring[20];
+  int startingIndex;
+  // , stringSize;
+  char charString[20], substring[20];
 
   printf ("Enter a character string: ");
   scanf ("%[^\n]", charString);
   printf ("Great! I have that the string is \"%s\".\n", charString);
-  printf ("Enter the starting index for removing characters: ");
+  printf ("Enter another character string to insert: ");
+  scanf("%s", substring);
+  printf ("Great! I have that the string string to insert is \"%s\".\n", substring);
+  printf ("Where should this string be inserted?: ");
   scanf("%i", &startingIndex);
-  printf ("Enter the length of the character string you want to remove: ");
-  scanf("%i", &stringSize);
   // printf ("Enter a word you want to find within: ");
   // scanf ("%19s", substring);
   //
@@ -64,7 +82,7 @@ int main (void)
   //
   // printf ("\nLooks like your substring is at index %i.\n", index);
 
-  removeString (charString, startingIndex, stringSize);
+  insertString (charString, substring, startingIndex);
 
   printf ("\nThe altered string is now \"%s\".\n", charString);
 
