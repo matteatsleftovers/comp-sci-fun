@@ -14,9 +14,11 @@ struct entry *insertEntry(struct entry *startingEntryPtr, int value)
 {
   struct entry *newEntryPtr = (struct entry *) malloc (sizeof(struct entry));
   newEntryPtr->value = value;
-  newEntryPtr->previous = startingEntryPtr;
-  newEntryPtr->next = startingEntryPtr->next;
-  startingEntryPtr->next = newEntryPtr;
+  if ( startingEntryPtr != NULL ) {
+    newEntryPtr->previous = startingEntryPtr;
+    newEntryPtr->next = startingEntryPtr->next;
+    startingEntryPtr->next = newEntryPtr;
+  }
   return newEntryPtr;
 }
 
