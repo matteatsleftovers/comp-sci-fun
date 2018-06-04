@@ -4,14 +4,10 @@
 
 int main (void)
 {
-  char inName[64], outName[64];
+  char inName[64] = "ch15-ex3-input.txt";
+  char outName[64] = "ch15-ex3-output.txt";
   FILE *in, *out;
   int c;
-
-  printf("Enter the name of the file to be copied: ");
-  scanf("%63s", inName);
-  printf("Enter the name of the output file: ");
-  scanf("%63s", outName);
 
   if ( (in = fopen(inName, "r")) == NULL ) {
     printf("Can't open %s for reading.\n", inName);
