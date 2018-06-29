@@ -4,7 +4,13 @@ using namespace std;
 struct slistelem {
   char        data;
   slistelem*  next;
+  slistelem(char c, slistelem* n);
 };
+
+slistelem::slistelem(char c, slistelem* n) {
+  data = c;
+  next = n;
+}
 
 class slist {
 public:
@@ -21,40 +27,57 @@ public:
   slistelem* first() const { return h; }
   void print() const;
   void release();
-  int length();
-  int count_c(char c);
+  int length() const;
+  int count_c(char c) const;
 private:
   slistelem* h;
 };
 
 slist::slist(const char* c) {
-  h -> data = *c;
+  slistelem* temp;
+  slistelem* to_add;
+
+  if (*c != '\0') {
+    to_add = new slistelem(*c, NULL);
+    h = to_add;
+    temp = h;
+    c++;
+  }
+
+  while (*c != '\0') {
+    to_add = new slistelem(*c, NULL);
+    temp->next = to_add;
+    temp = temp->next;
+    c++;
+  }
 }
 
 void slist::append(slist &e) {
-  cout << "Let's append!" << endl;
   slistelem* temp = h;
 
-  cout << "The length of the list to append is " << e.length() << endl;
+  while (temp->next != NULL) { // Go to the end of the list
+    temp = temp->next;
+  }
 
-  e.prepend(temp -> data);
-  temp = e.first();
-  h = temp;
+  if (e.first() != NULL) {
+    temp->next = e.first();
+    temp = temp->next;
+  }
+
+  while (temp->next != NULL) {
+    temp = temp->next;
+  }
 }
 
 void slist::prepend(char c) {
-  slistelem* temp = new slistelem;
-  assert(temp != 0);
-  temp -> next = h;
-  temp -> data = c;
+  slistelem* temp = new slistelem(c, h);
   h = temp;
 }
 
 void slist::del() {
-  cout << "OH YEAH DELETE" << endl;
-  if (h != 0) {
+  if (h != NULL) {
     slistelem* temp = h;
-    h = h -> next;
+    h = h->next;
     delete temp;
   }
 }
@@ -62,51 +85,54 @@ void slist::del() {
 void slist::print() const {
   slistelem* temp = h;
 
-  while (temp != 0) {
-    cout << temp -> data << " -> ";
-    temp = temp -> next;
+  while (temp != NULL) {
+    cout << temp->data << " -> ";
+    temp = temp->next;
   }
   cout << "\n###" << endl;
 }
 
 void slist::release() {
-  while (h != 0) del();
+  while (h != NULL) del();
 }
 
-int slist::length() {
+int slist::length() const {
   int i = 0;
   slistelem* temp = h;
 
-  while (temp != 0) {
+  while (temp != NULL) {
     i++;
-    temp = temp -> next;
+    temp = temp->next;
+  }
+  return i;
+}
+
+int slist::count_c(char c) const {
+  int i = 0;
+  slistelem* temp = h;
+
+  while (temp->next != NULL) {
+    if (temp->data == c) i++;
+    temp = temp->next;
   }
   return i;
 }
 
 int main() {
-  slist* p;
-  {
-    char a = 'A';
-    char* ap = &a;
-    slist v(&a);
+  const char* pc1 = "Hello, there.";
+  slist v(pc1);
+  v.print();
+  cout << "The list is " << v.length() << " long" << endl;
 
-    // char b = 'B';
-    // char* bp = &b;
-    slist w = v;
+  cout << "How many 'l's? " << v.count_c('l') << endl;
 
-    v.print();
-    cout << "The list is " << v.length() << " long" << endl;
+  const char* pc2 = "Nice weather outside.";
+  slist w(pc2);
+  w.print();
+  cout << "The list is " << w.length() << " long" << endl;
 
-    v.append(w);
-    v.print();
-    cout << "The list is " << v.length() << " long" << endl;
-    // w.del();
-    // w.print();
-    // cout << "The list is " << w.length() << " long" << endl;
-    // p = &w;
-    // p -> print();
-    cout << "exiting inner block" << endl;
-  }
-  cout << "exiting outer block" << endl;
+  cout << "Now let's append these lists!" << endl;
+  v.append(w);
+  v.print();
+  cout << "The list is " << v.length() << " long" << endl;
 }
