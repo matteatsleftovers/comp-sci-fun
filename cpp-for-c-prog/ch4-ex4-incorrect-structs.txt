@@ -1,0 +1,7 @@
+Q. What is wrong?
+A1. "a" is defined twice within the same file.
+A2. There is a forward declaration of the sister struct within the brother
+    struct. The definition of brother depends on sister, which has not yet been
+    defined in the file.
+    This would likely improve if brother and sister were defined in different
+    files at the same level of hierarchy.
