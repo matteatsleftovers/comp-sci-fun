@@ -8,8 +8,8 @@ struct slistelem {
 };
 
 slistelem::slistelem(char c, slistelem* n) {
-  data = c;
-  next = n;
+  this->data = c;
+  this->next = n;
 }
 
 class slist {
@@ -21,14 +21,14 @@ public:
     release();
   }
   void append(slist& e);
-  void prepend(char c);
   void copy(const slist &e);
-  void del();
   slistelem* first() const { return h; }
   void print() const;
   void release();
   int length() const;
   int count_c(char c) const;
+  void operator+(char c);
+  void operator--();
 private:
   slistelem* h;
 };
@@ -70,12 +70,12 @@ void slist::append(slist &e) {
   temp->next = e.h;
 }
 
-void slist::prepend(char c) {
+void slist::operator+(char c) {
   slistelem* temp = new slistelem(c, h);
   h = temp;
 }
 
-void slist::del() {
+void slist::operator--() {
   if (h != NULL) {
     slistelem* temp = h;
     h = h->next;
@@ -94,7 +94,7 @@ void slist::print() const {
 }
 
 void slist::release() {
-  while (h != NULL) del();
+  while (h != NULL) --(*this);
 }
 
 int slist::length() const {
@@ -122,6 +122,9 @@ int slist::count_c(char c) const {
 int main() {
   const char* pc1 = "Hello, there.";
   slist v(pc1);
+  v.print();
+  cout << "The list is " << v.length() << " long" << endl;
+  v + 'O';
   v.print();
   cout << "The list is " << v.length() << " long" << endl;
 
