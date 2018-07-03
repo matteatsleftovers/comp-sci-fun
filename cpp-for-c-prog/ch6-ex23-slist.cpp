@@ -29,6 +29,7 @@ public:
   int count_c(char c) const;
   void operator+(char c);
   void operator--();
+  slistelem operator[](int i);
 private:
   slistelem* h;
 };
@@ -83,6 +84,16 @@ void slist::operator--() {
   }
 }
 
+slistelem slist::operator[](int i) {
+  slistelem* temp = h;
+
+  for (int c = 0; c < i; ++c) { // Go to the ith element
+    temp = temp->next;
+  }
+
+  return *temp;
+}
+
 void slist::print() const {
   slistelem* temp = h;
 
@@ -129,6 +140,7 @@ int main() {
   cout << "The list is " << v.length() << " long" << endl;
 
   cout << "How many 'l's? " << v.count_c('l') << endl;
+  cout << "What letter is at the 4th node? " << v[4].data << endl;
 
   const char* pc2 = "Nice weather outside.";
   slist w(pc2);
