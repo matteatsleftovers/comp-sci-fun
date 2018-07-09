@@ -1,7 +1,8 @@
+#include <fstream>
 #include <iostream>
-#include <list>
 #include <string>
 #include <typeinfo>
+#include <vector>
 
 using namespace std;
 
@@ -23,46 +24,172 @@ private:
   string address;
   birth_date bd;
   gender g;
+
 public:
-  person() : name("Dolores Abernathy"), address("123 Fake St"), bd(*(new birth_date())), g(female) {}
+  person() : name("Dolores Abernathy"), address("123 Fake St"), bd(*(new birth_date())), g(other) {}
   person(string name, string address, birth_date bd, gender g) : name(name), address(address), bd(bd), g(g) {}
   string get_name() { return name; };
+  void set_name(string name) { this->name = name; }
   string get_address() { return address; }
+  void set_address(string address) { this->address = address; }
   void print_bd() { cout << bd.bd_year << "-" << bd.bd_mon << "-" << bd.bd_mday; }
-  string get_gender() {
-    switch(g) {
-      case male: return "male";
-      case female: return "female";
-      case other: return "other";
-    }
-  }
+  void set_bd(string bd_string);
+  string get_gender();
+  void assign_person(int data_marker);
+  virtual int get_number() = 0;
 };
 
 class student : virtual public person {
-
+  int get_number() {
+    return 1;
+  }
 };
 
 class worker : virtual public person {
-
+  int get_number() {
+    return 2;
+  }
 };
 
 class student_worker : public student, public worker {
-
+  int get_number() {
+    return 3;
+  }
 };
 
-int main() {
-  person* p_p1 = new person();
-  birth_date* bd = new birth_date(2088, 2, 14);
-  person* p_p2 = new person("William", "456 Bogus Ave", *bd, male);
-  list<person> l_p = { *p_p1, *p_p2 };
+void set_bd(string bd_string) {
+  string date_delimiter = "-";
 
-  for (person p : l_p) {
-    cout << "The name is " << p.get_name() << endl;
-    cout << "I live at " << p.get_address() << endl;
-    cout << "I was born on ";
-    p.print_bd();
+  size_t pos = 0;
+  string token;
+  int i = 0;
+
+  while ((pos = bd_string.find(date_delimiter)) != string::npos) {
+    token = bd_string.substr(0, pos);
+    cout << token << endl;
+    bd_string.erase(0, pos + date_delimiter.length());
+    i++;
+  }
+}
+
+string person::get_gender() {
+  switch(g) {
+    case male: return "male";
+    case female: return "female";
+    case other: return "other";
+  }
+}
+
+void person::assign_person(int data_marker) {
+  // switch(data_marker) {
+  //   case 0:
+  // }
+}
+
+person& create_person(string person_type) {
+  if (person_type == "student") {
+    cout << "That's a student!" << endl;
+    return *(new student());
+  } else if (person_type == "worker") {
+    cout << "That's a worker!" << endl;
+    return *(new worker());
+  } else {
+    cout << "That's a student worker!" << endl;
+    return *(new student_worker());
+  }
+}
+
+void print_person(person& p_r) {
+  // UNSOLVED
+  cout << "My type is " << typeid(p_r).name() << endl;
+  cout << "My number is " << p_r.get_number() << endl;
+  // UNSOLVED
+  cout << "The name is " << p_r.get_name() << endl;
+  cout << "I live at " << p_r.get_address() << endl;
+  cout << "I was born on ";
+  p_r.print_bd();
+  cout << endl;
+  cout << "I identify as " << p_r.get_gender() << endl;
+  cout << endl;
+}
+
+int main() {
+  string line;
+  string delimiter = ", ";
+  ifstream personfile("ch8-ex7-person.txt");
+
+  vector<unique_ptr<person>> v_p;
+
+  if (personfile.is_open()) {
+    while (getline(personfile, line)) {
+      size_t pos = 0;
+      string token;
+      int i = 0;
+      // person* p_p;
+
+      while ((pos = line.find(delimiter)) != string::npos) {
+        token = line.substr(0, pos);
+        if (i == 0) {
+          // EXPERIMENTAL PLS CLEAN UP
+          if (token == "student") {
+            student s = student();
+            // p_p = &s;
+            print_person(s);
+            v_p.emplace_back(&s);
+            // l_p.push_back(new student());
+          } else if (token == "worker") {
+            worker w = worker();
+            // p_p = &w;
+            print_person(w);
+            v_p.emplace_back(&w);
+          } else {
+            student_worker sw = student_worker();
+            // p_p = &sw;
+            print_person(sw);
+            v_p.emplace_back(&sw);
+          }
+          // p_p = &create_person(token);
+          // cout << "The person type is " << typeid(*p_p).name() << endl;
+        }
+        cout << token << endl;
+        line.erase(0, pos + delimiter.length());
+        i++;
+      }
+      cout << line << endl << endl;
+
+      // v_p.emplace_back(p_p);
+    }
+    personfile.close();
     cout << endl;
-    cout << "I identify as " << p.get_gender() << endl;
-    cout << endl;
+  }
+  else cout << "Unable to open file." << endl;
+
+  // All
+  for (const auto &p_p : v_p) {
+    print_person(*p_p);
+  }
+
+  // Students
+  cout << "STUDENTS" << endl;
+  for (const auto &p_p : v_p) {
+    if (typeid(p_p) == typeid(student)) {
+      print_person(*p_p);
+    }
+  }
+
+  // Workers
+  cout << "WORKERS" << endl;
+  for (const auto &p_p : v_p) {
+    if (typeid(p_p) == typeid(worker)) {
+      print_person(*p_p);
+    }
+  }
+
+  // Student Workers
+  cout << "STUDENT WORKERS" << endl;
+  for (const auto &p_p : v_p) {
+    if (typeid(p_p) == typeid(student_worker)) {
+      print_person(*p_p);
+    }
   }
 }
