@@ -1,0 +1,10 @@
+student, Dolores Abernathy, 123 Fake St, 2095-01-01, other
+student_worker, Maeve Millay, 333 Sweetwater Ave, 2089-02-14, female
+student_worker, Bernard Lowe, 45 Jeffries Dr, 2075-09-06, male
+worker, Arnold Weber, 45 Jeffires Dr, 2075-09-06, male
+worker, Theresa Cullen, 300 Normal Sq, 2084-05-21, female
+student, Clementine Pennyfeather, 3 Heart Plaza, 2097-08-08, female
+worker, Elsie Hughes, 3152 Curious Way, 2093-04-18, female
+worker, William NoLastNameFound, 1313 Dead End Dr, 2088-02-14, male
+student, Hector Escaton, 97 Black Ave, 2090-11-11, male
+worker, Robert Ford, 1 Infinite Loop, 2064-12-25, male

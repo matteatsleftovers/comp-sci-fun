@@ -8,8 +8,8 @@ struct slistelem {
 };
 
 slistelem::slistelem(char c, slistelem* n) {
-  data = c;
-  next = n;
+  this->data = c;
+  this->next = n;
 }
 
 class slist {
@@ -21,14 +21,15 @@ public:
     release();
   }
   void append(slist& e);
-  void prepend(char c);
   void copy(const slist &e);
-  void del();
   slistelem* first() const { return h; }
   void print() const;
   void release();
   int length() const;
   int count_c(char c) const;
+  void operator+(char c);
+  void operator--();
+  slistelem operator[](int i);
 private:
   slistelem* h;
 };
@@ -70,17 +71,27 @@ void slist::append(slist &e) {
   temp->next = e.h;
 }
 
-void slist::prepend(char c) {
+void slist::operator+(char c) {
   slistelem* temp = new slistelem(c, h);
   h = temp;
 }
 
-void slist::del() {
+void slist::operator--() {
   if (h != NULL) {
     slistelem* temp = h;
     h = h->next;
     delete temp;
   }
+}
+
+slistelem slist::operator[](int i) {
+  slistelem* temp = h;
+
+  for (int c = 0; c < i; ++c) { // Go to the ith element
+    temp = temp->next;
+  }
+
+  return *temp;
 }
 
 void slist::print() const {
@@ -94,7 +105,7 @@ void slist::print() const {
 }
 
 void slist::release() {
-  while (h != NULL) del();
+  while (h != NULL) --(*this);
 }
 
 int slist::length() const {
@@ -124,8 +135,12 @@ int main() {
   slist v(pc1);
   v.print();
   cout << "The list is " << v.length() << " long" << endl;
+  v + 'O';
+  v.print();
+  cout << "The list is " << v.length() << " long" << endl;
 
   cout << "How many 'l's? " << v.count_c('l') << endl;
+  cout << "What letter is at the 4th node? " << v[4].data << endl;
 
   const char* pc2 = "Nice weather outside.";
   slist w(pc2);
