@@ -1,7 +1,7 @@
 #ifndef LINEAR_CONTAINER_H
 #define LINEAR_CONTAINER_H
 
-#include <iostream>
+#include "debug.hpp"
 
 template <class T>
 struct listelem {
@@ -42,31 +42,28 @@ LinearContainer<T>::LinearContainer(const int n) {
 
 template <class T>
 void LinearContainer<T>::push(T t) {
-  std::cout << "Trying to push!" << "\n";
-  std::cout << "The value of T is " << t << "\n";
+  log("Trying to push!");
   if (this->is_full()) {
-    std::cout << "The container is full! Allocating more space..." << "\n";
+    log("The container is full! Allocating more space...");
     this->max_size *= 2;
-    std::cout << "There are now " << max_size << " spaces allocated." << "\n";
   }
   if (this->head == 0 && this->tail == 0) { // Case of empty list
-    std::cout << "Initialize" << "\n";
+    log("Initialize");
     listelem<T>* temp = new listelem<T>(t, 0, 0);
     this->head = temp;
     this->tail = temp;
   } else {
-    std::cout << "Add new node" << "\n";
+    log("Add new node");
     listelem<T>* temp = new listelem<T>(t, 0, this->head);
     this->head->prev = temp;
     this->head = temp;
-    std::cout << "The value of head is " << this->head->data << "\n";
   }
-  std::cout << "\n";
   current_size++;
 }
 
 template <class T>
 T LinearContainer<T>::pop() {
+  log("Trying to pop!");
   current_size--;
   return 0;
 }
@@ -78,9 +75,7 @@ bool LinearContainer<T>::is_empty() {
 
 template <class T>
 bool LinearContainer<T>::is_full() {
-  std::cout << "Checking if full..." << "\n";
-  std::cout << "current_size is " << current_size << "\n";
-  std::cout << "max_size is " << max_size << "\n";
+  log("Checking if full...");
   return current_size == max_size;
 }
 
