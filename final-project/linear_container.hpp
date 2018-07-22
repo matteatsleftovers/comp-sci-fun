@@ -6,13 +6,14 @@ class LinearContainer {
 public:
   LinearContainer<T>();
   LinearContainer<T>(int n);
-  virtual void push(T);
-  virtual T pop();
+  virtual void push(T) = 0;
+  virtual T pop() = 0;
   bool is_empty();
   bool is_full();
+protected:
+  T* elements[10];
 private:
   int size;
-  T* elements[10];
 };
 
 template <class T>
