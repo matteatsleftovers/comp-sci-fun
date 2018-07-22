@@ -2,6 +2,21 @@
 #define LINEAR_CONTAINER_H
 
 template <class T>
+struct listelem {
+  T              data;
+  listelem<T>*   prev;
+  listelem<T>*   next;
+  listelem(T t, listelem<T>* prev, listelem<T>* next);
+};
+
+template <class T>
+listelem<T>::listelem(T t, listelem<T>* prev, listelem<T>* next) {
+  this->data = t;
+  this->prev = prev;
+  this->next = next;
+}
+
+template <class T>
 class LinearContainer {
 public:
   LinearContainer<T>();
@@ -11,7 +26,8 @@ public:
   bool is_empty();
   bool is_full();
 protected:
-  T* elements[10];
+  listelem<T>* head = 0;
+  listelem<T>* tail = 0;
 private:
   int size;
 };
@@ -24,28 +40,16 @@ LinearContainer<T>::LinearContainer() {
 template <class T>
 LinearContainer<T>::LinearContainer(const int n) {
   this->size = n;
-  elements[size];
 }
 
 template <class T>
 bool LinearContainer<T>::is_empty() {
-  bool is_empty = true;
-  for (int i = 0; i < size; ++i) {
-    if (elements[i] != 0) {
-      is_empty = false;
-    }
-  }
-  return is_empty;
+  return !(this->head != 0 && this->tail != 0);
 }
 
 template <class T>
 bool LinearContainer<T>::is_full() {
   bool is_full = true;
-  for (int i = 0; i < size; ++i) {
-    if (elements[i] == 0) {
-      is_full = false;
-    }
-  }
   return is_empty;
 }
 
