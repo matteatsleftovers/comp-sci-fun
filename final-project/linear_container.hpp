@@ -1,3 +1,6 @@
+#ifndef LINEAR_CONTAINER_H
+#define LINEAR_CONTAINER_H
+
 template <class T>
 class LinearContainer {
 public:
@@ -44,3 +47,5 @@ bool LinearContainer<T>::is_full() {
   }
   return is_empty;
 }
+
+#endif
