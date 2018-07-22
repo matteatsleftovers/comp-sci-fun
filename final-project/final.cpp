@@ -4,7 +4,7 @@
 
 int main(void) {
     std::cout << "== Stack == " << std::endl;
-    Stack<int> s = Stack<int>();
+    Stack<int> s = Stack<int>(3);
 
     for(int i = 1; i <= 15; i++)
         s.push(i);
@@ -19,7 +19,7 @@ int main(void) {
         std::cout << s.pop() << std::endl;
 
     std::cout << std::endl << "== Queue == " << std::endl;
-    Queue<int> q = Queue<int>();
+    Queue<int> q = Queue<int>(3);
 
     for(int i = 1; i <= 15; i++)
         q.push(i);

@@ -3,6 +3,8 @@
 template <class T>
 class Queue : public LinearContainer<T> {
 public:
+  Queue<T>() : LinearContainer<T>() { };
+  Queue<T>(int n) : LinearContainer<T>(n) { };
   void push(T);
   T pop();
 };

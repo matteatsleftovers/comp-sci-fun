@@ -3,6 +3,8 @@
 template <class T>
 class Stack : public LinearContainer<T> {
 public:
+  Stack<T>() : LinearContainer<T>() { };
+  Stack<T>(int n) : LinearContainer<T>(n) { };
   void push(T);
   T pop();
 };
