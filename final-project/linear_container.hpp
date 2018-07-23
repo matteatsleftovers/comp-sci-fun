@@ -23,6 +23,7 @@ class LinearContainer {
 public:
   LinearContainer<T>() { };
   LinearContainer<T>(int n);
+  ~LinearContainer<T>();
   virtual void push(T t);
   virtual T pop();
   bool is_empty();
@@ -41,8 +42,20 @@ LinearContainer<T>::LinearContainer(const int n) {
 }
 
 template <class T>
+LinearContainer<T>::~LinearContainer() {
+  log("Destructor invoked! Watch out now.");
+  while (this->head != NULL) {
+    listelem<T>* temp = this->head;
+    log("The current value of temp->data is %i", temp->data);
+    log("The current value of head->data is %i", this->head->data);
+    this->head = this->head->next;
+    delete temp;
+  }
+}
+
+template <class T>
 void LinearContainer<T>::push(T t) {
-  log("Trying to push!");
+  log("Trying to push the following value %i", t);
   if (this->is_full()) {
     log("The container is full! Allocating more space...");
     this->max_size *= 2;
